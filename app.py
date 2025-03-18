@@ -24,9 +24,11 @@ def predict_sentiment(review):
     sequence = tokenizer.texts_to_sequences([review])
     padded_sequence = pad_sequences(sequence, maxlen=MAX_LEN)
     prediction = model.predict(padded_sequence)
-    predicted_label = np.argmax(prediction)
-    sentiment = label_encoder.inverse_transform([predicted_label])
-    return sentiment[0]
+    
+    predicted_label = int(np.argmax(prediction))  # ✅ Convert np.int64 to Python int
+    sentiment = label_encoder.inverse_transform([predicted_label])[0]  # ✅ Extract string
+    
+    return sentiment  # Now it returns a proper string
 
 # Flask route for prediction
 @app.route("/predict", methods=["POST"])
