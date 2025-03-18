@@ -4,19 +4,23 @@ import pickle
 import numpy as np
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 from tensorflow.keras.models import load_model
+from flask_cors import CORS  # ✅ Allow cross-origin requests (fixes CORS issues)
 
 # Initialize Flask app
 app = Flask(__name__)
+CORS(app)  # ✅ Enables Cross-Origin Resource Sharing
 
 # Load trained model, tokenizer, and label encoder
 model = load_model("sentiment_model.h5")
+
 with open("tokenizer.pkl", "rb") as handle:
     tokenizer = pickle.load(handle)
+
 with open("label_encoder.pkl", "rb") as handle:
     label_encoder = pickle.load(handle)
 
 # Define constants
-MAX_LEN = 200  # Same max length used during training
+MAX_LEN = 200  # Ensure it matches the max length used during training
 
 # Prediction function
 def predict_sentiment(review):
@@ -41,7 +45,7 @@ def predict():
             return jsonify({"error": "No review provided"}), 400
         
         sentiment = predict_sentiment(review)
-        return jsonify({"review": review, "sentiment": sentiment})
+        return jsonify({"review": review, "sentiment": str(sentiment)})  # ✅ Convert to string
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
