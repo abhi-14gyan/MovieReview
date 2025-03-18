@@ -1,0 +1,16 @@
+# Ignore virtual environment
+myenv/
+venv/
+
+# Ignore large files
+myenv/Lib/site-packages/clang/native/libclang.dll
+myenv/Lib/site-packages/tensorflow/python/_pywrap_tensorflow_internal.pyd
+
+# Ignore Python compiled files
+__pycache__/
+*.pyc
+*.pyo
+
+# Ignore logs and temp files
+*.log
+*.tmp
